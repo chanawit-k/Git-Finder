@@ -69,7 +69,7 @@ class App extends Component {
             <Navbar />
             <Alert alert={this.state.alert} />
             <Switch>
-              <Route exact path='/' render={props =>(
+              <Route exact path='/' render={props => (
                 <Fragment>
                   <Search 
                     searchusers={this.searchusers} 
