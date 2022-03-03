@@ -4,6 +4,8 @@ import Spinnner from '../layout/Spinnner'
 
 const User = ({loading, Users}) => {
     
+
+    
     if (loading){
         return <Spinnner /> 
     }else{
@@ -16,6 +18,7 @@ const User = ({loading, Users}) => {
         )
     }
 }
+
 const userStyle = {
     display: 'grid',
     gridTemplateColumns: 'repeat(3,1fr)',

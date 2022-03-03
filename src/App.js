@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import Navbar from './components/layout/Navbar';
 import User from './components/user/User';
+import UserInformation from './components/user/UserInformation';
 import Search from './components/user/Search';
 import Alert from './components/layout/Alert';
 import About from './components/pages/About';
@@ -19,6 +20,7 @@ class App extends Component {
 
   state = {
     users : [],
+    user:[],
     loading : false,
     alert:null 
   }
@@ -50,6 +52,18 @@ class App extends Component {
     }
 
   }
+
+  getUserInformation = async (username) => {
+    this.setState({loading:true})
+    if(username){
+      const res = await axios.get('https://api.github.com/users/'+username);
+      this.setState({
+        user:res.data,
+        loading:false   
+      })
+      this.setState({loading:false})
+    }
+  }
   
   clearusers = ()=>{this.setState({users : [], loading : false})}
 
@@ -61,7 +75,7 @@ class App extends Component {
   }
 
   render (){
-    const {users,loading} = this.state
+    const {users,user,loading} = this.state
 
     return (
       <Router>
@@ -69,19 +83,22 @@ class App extends Component {
             <Navbar />
             <Alert alert={this.state.alert} />
             <Switch>
-              <Route exact path='/' render={props => (
-                <Fragment>
-                  <Search 
-                    searchusers={this.searchusers} 
-                    clearusers={this.clearusers} 
-                    showClearButton={users.length > 0 ? true:false}
-                    alertMessage={this.alertMessage} />
-                  <div className="container">
-                    <User loading={loading} Users={this.state.users} /> 
-                  </div>
-                </Fragment>
-              )}/>
+              <Route  exact path='/' 
+                render={props => (
+                  <Fragment>
+                    <Search 
+                      searchusers={this.searchusers} 
+                      clearusers={this.clearusers} 
+                      showClearButton={users.length > 0 ? true:false}
+                      alertMessage={this.alertMessage} />
+                    <div className="container">
+                      <User loading={loading} Users={users} /> 
+                    </div>
+                  </Fragment>
+                )}/>
               <Route exact path='/about' render={About}/>
+              <Route exact path='/user_information/:login' 
+                render={ props=>(<UserInformation {...props} getUserInformation={this.getUserInformation} user={user} loading={loading}   />) }/>
             </Switch>
         </div>
       </Router>
