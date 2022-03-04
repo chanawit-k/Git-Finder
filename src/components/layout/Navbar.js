@@ -2,8 +2,6 @@ import React from 'react'
 import propsTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-
-
 const Navbar = ({title,icon})  => {  
     return (
         <nav className='navbar bg-primary'>
