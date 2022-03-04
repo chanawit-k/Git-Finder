@@ -1,110 +1,112 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types';
 import { Fragment } from 'react';
 import Repo from './Repo';
+import Spinner from '../layout/Spinnner';
 import { Link } from 'react-router-dom';
 
-class UserInformation extends Component {
+const UserInformation = ({user,match,loading,getUserInformation,getUserrepo,repos}) => {
 
-	componentDidMount(){ 
-		this.props.getUserInformation(this.props.match.params.login)
-		this.props.getUserrepo(this.props.match.params.login)
-	}
+	useEffect(()=>{
+		getUserInformation(match.params.login)
+		getUserrepo(match.params.login)
+		// eslint-disable-next-line
+	}, []);
 
-	static propstypes = { 
-		loading : PropTypes.bool,
-		user:PropTypes.object.isRequired,
-		getUserInformation:PropTypes.func.isRequired,
-		getUserrepo:PropTypes.func.isRequired,
-	}
+	const {
+		name,
+		company,
+		avatar_url,
+		location,
+		bio,
+		blog,
+		login,
+		html_url,
+		followers,
+		following,
+		public_repos,
+		public_gists,
+		hireable
+	}=  user;
+	
+	if (loading) return <Spinner />;
 
-	render(){
-		const {
-			name,
-			company,
-			avatar_url,
-			location,
-			bio,
-			blog,
-			login,
-			html_url,
-			followers,
-			following,
-			public_repos,
-			public_gists,
-			hireable
-		}=  this.props.user;
-		
-		const {repos} = this.props
-		return (
-			<Fragment>
-			<Link to='/' className='btn btn-light'>
-				Back To Search
-			</Link>
-			Hireable:{' '}
-			{hireable ? (
-				<i className='fas fa-check text-success' />
-			) : (
-				<i className='fas fa-times-circle text-danger' />
-			)}
-			<div className='card grid-2'>
-				<div className='all-center'>
-					<img
-						src={avatar_url}
-						className='round-img'
-						alt=''
-						style={{ width: '150px' }}
-					/>
-					<h1>{name}</h1>
-					<p>Location: {location}</p>
-				</div>
-				<div>
-					{bio && (
-						<Fragment>
-							<h3>Bio</h3>
-							<p>{bio}</p>
-						</Fragment>
-					)}
-					<a href={html_url} className='btn btn-dark my-1'>
-						Visit Github Profile
-					</a>
-					<ul>
-						<li>
-							{login && (
-								<Fragment>
-									<strong>Username: </strong> {login}
-								</Fragment>
-							)}
-						</li>
-
-						<li>
-							{company && (
-								<Fragment>
-									<strong>Company: </strong> {company}
-								</Fragment>
-							)}
-						</li>
-
-						<li>
-							{blog && (
-								<Fragment>
-									<strong>Website: </strong> {blog}
-								</Fragment>
-							)}
-						</li>
-					</ul>
-				</div>
+	return (
+		<Fragment>
+		<Link to='/' className='btn btn-light'>
+			Back To Search
+		</Link>
+		Hireable:{' '}
+		{hireable ? (
+			<i className='fas fa-check text-success' />
+		) : (
+			<i className='fas fa-times-circle text-danger' />
+		)}
+		<div className='card grid-2'>
+			<div className='all-center'>
+				<img
+					src={avatar_url}
+					className='round-img'
+					alt=''
+					style={{ width: '150px' }}
+				/>
+				<h1>{name}</h1>
+				<p>Location: {location}</p>
 			</div>
-			<div className='card text-center'>
-				<div className='badge badge-primary'>Followers: {followers}</div>
-				<div className='badge badge-success'>Following: {following}</div>
-				<div className='badge badge-light'>Public Repos: {public_repos}</div>
-				<div className='badge badge-dark'>Public Gists: {public_gists}</div>
+			<div>
+				{bio && (
+					<Fragment>
+						<h3>Bio</h3>
+						<p>{bio}</p>
+					</Fragment>
+				)}
+				<a href={html_url} className='btn btn-dark my-1'>
+					Visit Github Profile
+				</a>
+				<ul>
+					<li>
+						{login && (
+							<Fragment>
+								<strong>Username: </strong> {login}
+							</Fragment>
+						)}
+					</li>
 
+					<li>
+						{company && (
+							<Fragment>
+								<strong>Company: </strong> {company}
+							</Fragment>
+						)}
+					</li>
+
+					<li>
+						{blog && (
+							<Fragment>
+								<strong>Website: </strong> {blog}
+							</Fragment>
+						)}
+					</li>
+				</ul>
 			</div>
-			<Repo repos={repos} />						
-		</Fragment>
-		)
-	}
+		</div>
+		<div className='card text-center'>
+			<div className='badge badge-primary'>Followers: {followers}</div>
+			<div className='badge badge-success'>Following: {following}</div>
+			<div className='badge badge-light'>Public Repos: {public_repos}</div>
+			<div className='badge badge-dark'>Public Gists: {public_gists}</div>
+
+		</div>
+		<Repo repos={repos} />						
+	</Fragment>
+	)
 }
+
+UserInformation.propstypes = { 
+	loading : PropTypes.bool,
+	user:PropTypes.object.isRequired,
+	getUserInformation:PropTypes.func.isRequired,
+	getUserrepo:PropTypes.func.isRequired,
+}
+
 export default UserInformation

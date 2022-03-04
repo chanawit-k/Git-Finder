@@ -1,38 +1,34 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-class Search extends Component {
-    state = { 
-        text : ''
-    }
+const  Search = ({searchusers,clearusers,showClearButton,alertMessage}) => {
+    const [text , setText] = useState()
 
-    static propTypes = {
-        searchusers: PropTypes.func.isRequired,
-        clearusers: PropTypes.func.isRequired
-    };  
-
-    onSubmit = (e) => {
+    const onSubmit = (e) => {
         e.preventDefault()
-        if(e.target.text.value === ''){
-            this.props.alertMessage('Please insert Your text', 'light')
+        if(text === ''){
+            alertMessage('Please insert Your text', 'light')
         }else{
-            this.props.searchusers(e.target.text)
+            searchusers(e.target.text)
         }
     }
 
-    onChange = (e) => { this.setState( {[e.target.name] : e.target.value})}
-    
-    render() {
-        const {showClearButton,clearusers} = this.props;
+    const onChange = (e) => { setText( e.target.value)}
 
-        return (
-            <form onSubmit={this.onSubmit.bind(this.state)}>
-                <input type="text" name="text" value={this.state.text}   placeholder='text' onChange={this.onChange}  />
-                <input type="submit" value='Serach' className="btn btn-dark btn-block" />
-                {showClearButton && <input type="button" value='Clear' className="btn btn-block" onClick={clearusers}/>}
-            </form>
-        )
-    }
+    console.log(text)
+
+    return (
+        <form onSubmit={onSubmit}>
+            <input type="text" name="text" value={text}   placeholder='text' onChange={onChange}  />
+            <input type="submit" value='Serach' className="btn btn-dark btn-block" />
+            {showClearButton && <input type="button" value='Clear' className="btn btn-block" onClick={clearusers}/>}
+        </form>
+    )
 }
+
+Search.propTypes = {
+    searchusers: PropTypes.func.isRequired,
+    clearusers: PropTypes.func.isRequired
+};  
 
 export default Search

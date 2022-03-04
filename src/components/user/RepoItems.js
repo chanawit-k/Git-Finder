@@ -1,7 +1,6 @@
 import React from 'react'
 
 const RepoItems = ({repo}) => {
-    console.log(repo.name)
     return (
         <div className='card'>
             <h3>
