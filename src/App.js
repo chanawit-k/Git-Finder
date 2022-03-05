@@ -1,14 +1,14 @@
 
-import React,{ useState, Fragment } from 'react';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from "react-router-dom";
 import Navbar from './components/layout/Navbar';
-import User from './components/user/User';
 import UserInformation from './components/user/UserInformation';
-import Search from './components/user/Search';
+import Home from './components/pages/Home';
+import NotFound from './components/pages/NotFound';
 import Alert from './components/layout/Alert';
 import About from './components/pages/About';
 import './App.css';
@@ -26,20 +26,13 @@ const App = () =>{
                   <Navbar />
                   <Alert />
                   <Switch>
-                        <Route  exact path='/' 
-                           render={props => (
-                           <Fragment>
-                                 <Search />
-                                 <div className="container">
-                                    <User /> 
-                                 </div>
-                           </Fragment>
-                        )}/>
+                     <Route  exact path='/' component={Home} />
                      <Route exact path='/about' render={About}/>
                      <Route exact path='/user_information/:login' 
                         render={ props=>(
                            <UserInformation {...props} />
                         ) }/>
+                     <Route component={NotFound}/>
                   </Switch>
                </div>
             </Router>
